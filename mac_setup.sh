@@ -6,6 +6,7 @@
 main() {
 	install-xcode #dependency
 	install-brew-cask-apps  #installs cli and gui apps
+	install-vs-code-extensions # installs VS Code extensions
 	create-ssh-key #sets up id_rsa and ssh config for first time
 	mac-defaults #sets up many mac defaults
 }
@@ -40,6 +41,7 @@ install-brew-cask-apps() {
 
 		apps=(
 			coreutils #make mac command line more like GNU Linux
+			gh #Github CLI
 			git
 			git-extras
 			legit
@@ -73,24 +75,16 @@ install-brew-cask-apps() {
 			#browsers
 			firefox 
 			google-chrome 
-			brave-browser
 
-			#gravitational
-			sublime-text
+			#Teleport
+			visual-studio-code
 			zoomus
 			1password
-			1password-cli
 			slack
 			google-backup-and-sync
-			
-			#grav-dev
 			drone-cli
 			docker
 			
-
-			#dev tools
-			iterm2
-
 			#security
 			protonvpn
 
@@ -101,7 +95,6 @@ install-brew-cask-apps() {
 			alfred
 			bartender
 			bettertouchtool
-			cleanmymac
 
 			#fun
 			spotify
@@ -116,7 +109,7 @@ install-brew-cask-apps() {
 				if [ ! -e /usr/local/Caskroom/$i ] 
 				then
 					echo "installing $i"
-					brew cask install $i
+					brew install --cask $i
 				else 
 					echo "brew cask app $i already instaålled"
 				fi
@@ -124,6 +117,25 @@ install-brew-cask-apps() {
 
 		brew cleanup
 	fi
+}
+
+install-vs-code-extensions() {
+
+	extensions=(
+		hashicorp.terraform
+		ms-azuretools.vscode-docker
+		ms-python.python
+		esbenp.prettier-vscode
+		golang.go
+		ms-ossdata.vscode-postgresql
+
+		)
+	for i in "${extensions[@]}" ; do
+		echo "installing $i"
+		code --install-extension $i
+
+	done
+
 }
 
 create-ssh-key() {
